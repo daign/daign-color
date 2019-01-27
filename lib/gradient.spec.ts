@@ -93,6 +93,21 @@ describe( 'Gradient', () => {
       // assert
       expect( spy.calledOnce ).to.be.true;
     } );
+
+    it( 'should not call sortStops if the position of the color stop is set to the same value',
+    () => {
+      // arrange
+      const g = new Gradient();
+      const spy = sinon.spy( g as any, 'sortStops' );
+
+      // act
+      g.addColorStop( 0.2, new Color() );
+      spy.resetHistory();
+      g.stops[ 0 ].position = 0.2;
+
+      // assert
+      expect( spy.notCalled ).to.be.true;
+    } );
   } );
 
   describe( 'colorAt', () => {
@@ -145,6 +160,36 @@ describe( 'Gradient', () => {
       // assert
       expect( result.equals( c ) ).to.be.true;
     } );
+
+    it( 'should get the color of the last stop if requested position is bigger', () => {
+      // arrange
+      const g = new Gradient();
+      const c = new Color( 0, 203, 190, 0.1 );
+
+      g.addColorStop( 0.2, new Color() );
+      g.addColorStop( 0.8, c );
+
+      // act
+      const result = g.colorAt( 1 );
+
+      // assert
+      expect( result.equals( c ) ).to.be.true;
+    } );
+
+    it( 'should throw error when a color stop has been cleared', () => {
+      // arrange
+      const g = new Gradient();
+      g.addColorStop( 0.2, new Color() );
+      g.stops[ 0 ].clear();
+
+      // act
+      const badFn = (): void => {
+        g.colorAt( 0 );
+      };
+
+      // assert
+      expect( badFn ).to.throw( Error );
+    } );
   } );
 
   describe( 'clear', () => {
@@ -175,6 +220,21 @@ describe( 'Gradient', () => {
 
       // assert
       expect( ( c as any ).listeners.length ).to.equal( 0 );
+    } );
+
+    it( 'should not throw error when a color stop has been already cleared', () => {
+      // arrange
+      const g = new Gradient();
+      g.addColorStop( 0.2, new Color() );
+      g.stops[ 0 ].clear();
+
+      // act
+      const badFn = (): void => {
+        g.clear();
+      };
+
+      // assert
+      expect( badFn ).to.not.throw();
     } );
   } );
 
@@ -271,6 +331,25 @@ describe( 'Gradient', () => {
       expect( stops[ 0 ].position ).to.equal( 0 );
       expect( stops[ 1 ].position ).to.equal( 0.2 );
       expect( stops[ 2 ].position ).to.equal( 1 );
+    } );
+
+    it( 'should sort the color stops with same position', () => {
+      // arrange
+      const g = new Gradient();
+      g.addColorStop( 0.2, new Color() );
+      g.addColorStop( 1, new Color() );
+      g.addColorStop( 0.2, new Color() );
+      g.addColorStop( 0, new Color() );
+
+      // act
+      ( g as any ).sortStops();
+
+      // assert
+      const stops = g.stops;
+      expect( stops[ 0 ].position ).to.equal( 0 );
+      expect( stops[ 1 ].position ).to.equal( 0.2 );
+      expect( stops[ 2 ].position ).to.equal( 0.2 );
+      expect( stops[ 3 ].position ).to.equal( 1 );
     } );
   } );
 } );
