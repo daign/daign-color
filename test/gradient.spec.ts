@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 
-import {Color} from './color';
-import {Gradient} from './gradient';
+import {Color} from '../lib/color';
+import {Gradient} from '../lib/gradient';
 
 describe( 'Gradient', () => {
   describe( 'stops getter', () => {

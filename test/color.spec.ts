@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import * as sinon from 'sinon';
 
-import {Color} from './color';
+import {Color} from '../lib/color';
 
 describe( 'Color', () => {
   describe( 'getter r', () => {
