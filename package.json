@@ -1,6 +1,6 @@
 {
   "name": "@daign/color",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple color utils library in Typescript",
   "keywords": [
     "color",
