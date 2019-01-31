@@ -12,6 +12,25 @@ Every class implements an [observable pattern](https://github.com/daign/daign-ob
 npm install @daign/color --save
 ```
 
+## Usage
+
+```typescript
+import {Color} from '@daign/color';
+import {Gradient} from '@daign/color';
+
+// Create color objects
+const color1 = new Color( 255, 255, 255, 1 );
+const color2 = new Color().setFromHex( '#ff9933' );
+
+// Create gradient object
+const gradient = new Gradient();
+gradient.addColorStop( 0, color1 );
+gradient.addColorStop( 1, color2 );
+
+// Get interpolated color from the gradient
+console.log( gradient.colorAt( 0.5 ).hex );
+```
+
 ## Scripts
 
 #### Build
