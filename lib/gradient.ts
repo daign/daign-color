@@ -1,13 +1,13 @@
-import {MathHelper} from '@daign/math';
-import {Observable} from '@daign/observable';
+import { MathHelper } from '@daign/math';
+import { Observable } from '@daign/observable';
 
-import {Color} from './color';
+import { Color } from './color';
 
 /**
  * Internal class for a color point in a gradient
  */
 class ColorStop extends Observable {
-  private _position: number; // from 0 to 1
+  private _position: number; // From 0 to 1
   private _color: Color | undefined;
   private colorSubscriptionRemover: ( () => void ) | undefined;
 
@@ -21,12 +21,12 @@ class ColorStop extends Observable {
 
   /**
    * Setter for the position value
-   * @param value The position value
+   * @param inputValue The position value
    */
-  public set position( value: number ) {
-    value = MathHelper.clamp( value, 0, 1 );
+  public set position( inputValue: number ) {
+    const value = MathHelper.clamp( inputValue, 0, 1 );
 
-    // only call observers if something changed
+    // Only call observers if something changed.
     if ( this._position !== value ) {
       this._position = value;
       this.notifyObservers();
@@ -46,18 +46,18 @@ class ColorStop extends Observable {
 
   /**
    * Constructor
-   * @param p The position value
-   * @param c The color value
+   * @param position The position value
+   * @param color The color value
    */
-  constructor( p: number, c: Color ) {
+  public constructor( position: number, color: Color ) {
     super();
 
-    p = MathHelper.clamp( p, 0, 1 );
+    const p = MathHelper.clamp( position, 0, 1 );
     this._position = p;
-    // the passed color is used directly, not cloned
-    this._color = c;
+    // The passed color is used directly, not cloned.
+    this._color = color;
 
-    // notify observers when color has changes
+    // Notify observers when color has changes.
     const callback = (): void => {
       this.notifyObservers();
     };
@@ -83,7 +83,7 @@ class ColorStop extends Observable {
  */
 export class Gradient extends Observable {
   private _stops: ColorStop[];
-  private stopSubscriptionRemovers: Array<() => void>;
+  private stopSubscriptionRemovers: ( () => void )[];
 
   /**
    * Getter for the color stops
@@ -96,7 +96,7 @@ export class Gradient extends Observable {
   /**
    * Constructor
    */
-  constructor() {
+  public constructor() {
     super();
     this._stops = [];
     this.stopSubscriptionRemovers = [];
@@ -112,7 +112,7 @@ export class Gradient extends Observable {
     const colorStop = new ColorStop( position, color );
     this._stops.push( colorStop );
 
-    // notify observers when color stop changes
+    // Notify observers when color stop changes.
     const callback = (): void => {
       this.sortStops();
       this.notifyObservers();
@@ -130,11 +130,11 @@ export class Gradient extends Observable {
    * @returns The calculated color
    */
   public colorAt( t: number ): Color {
-    // search for the index of the lowest stop position bigger than t,
-    // or length of array if no stop position is bigger than t
+    /* Search for the index of the lowest stop position bigger than t, or length of array if no stop
+     * position is bigger than t. */
     let u = 0;
     while ( this._stops[ u ] && this._stops[ u ].position < t && u < this._stops.length ) {
-      u++;
+      u += 1;
     }
 
     if ( u === 0 ) {
@@ -157,13 +157,13 @@ export class Gradient extends Observable {
    * @returns A reference to itself
    */
    public clear(): Gradient {
-     // remove change subscriptions on stops
+     // Remove change subscriptions on stops.
      this.stopSubscriptionRemovers.forEach( ( callback: () => void ): void => {
        callback();
      } );
      this.stopSubscriptionRemovers = [];
 
-     // need to call clear on all ColorStops because they hold references to the color objects
+     // Need to call clear on all ColorStops because they hold references to the color objects.
      this._stops.forEach( ( c: ColorStop ): void => {
        c.clear();
      } );

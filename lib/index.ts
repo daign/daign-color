@@ -1,2 +1,2 @@
-export {Color} from './color';
-export {Gradient} from './gradient';
+export { Color } from './color';
+export { Gradient } from './gradient';

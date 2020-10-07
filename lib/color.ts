@@ -1,5 +1,5 @@
-import {MathHelper} from '@daign/math';
-import {Observable} from '@daign/observable';
+import { MathHelper } from '@daign/math';
+import { Observable } from '@daign/observable';
 
 /**
  * Color
@@ -21,13 +21,13 @@ export class Color extends Observable {
 
   /**
    * Set the red channel value
-   * @param value The red channel value
+   * @param inputValue The red channel value
    */
-  public set r( value: number ) {
-    value = Math.round( value );
+  public set r( inputValue: number ) {
+    let value = Math.round( inputValue );
     value = MathHelper.clamp( value, 0, 255 );
 
-    // only call observers if something changed
+    // Only call observers if something changed.
     if ( this._r !== value ) {
       this._r = value;
       this.notifyObservers();
@@ -44,13 +44,13 @@ export class Color extends Observable {
 
   /**
    * Set the green channel value
-   * @param value The green channel value
+   * @param inputValue The green channel value
    */
-  public set g( value: number ) {
-    value = Math.round( value );
+  public set g( inputValue: number ) {
+    let value = Math.round( inputValue );
     value = MathHelper.clamp( value, 0, 255 );
 
-    // only call observers if something changed
+    // Only call observers if something changed.
     if ( this._g !== value ) {
       this._g = value;
       this.notifyObservers();
@@ -67,13 +67,13 @@ export class Color extends Observable {
 
   /**
    * Set the blue channel value
-   * @param value The blue channel value
+   * @param inputValue The blue channel value
    */
-  public set b( value: number ) {
-    value = Math.round( value );
+  public set b( inputValue: number ) {
+    let value = Math.round( inputValue );
     value = MathHelper.clamp( value, 0, 255 );
 
-    // only call observers if something changed
+    // Only call observers if something changed.
     if ( this._b !== value ) {
       this._b = value;
       this.notifyObservers();
@@ -90,12 +90,12 @@ export class Color extends Observable {
 
   /**
    * Set the opacity channel value
-   * @param value The opacity channel value
+   * @param inputValue The opacity channel value
    */
-  public set a( value: number ) {
-    value = MathHelper.clamp( value, 0, 1 );
+  public set a( inputValue: number ) {
+    const value = MathHelper.clamp( inputValue, 0, 1 );
 
-    // only call observers if something changed
+    // Only call observers if something changed.
     if ( this._a !== value ) {
       this._a = value;
       this.notifyObservers();
@@ -107,7 +107,7 @@ export class Color extends Observable {
    * @returns The RGBA string
    */
   public get rgba(): string {
-    return 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')';
+    return `rgba(${this.r},${this.g},${this.b},${this.a})`;
   }
 
   /**
@@ -117,7 +117,7 @@ export class Color extends Observable {
   public get hex(): string {
     return (
       // tslint:disable-next-line:no-bitwise
-      '#' + ( ( 1 << 24 ) + ( this.r << 16 ) + ( this.g << 8 ) + this.b ).toString( 16 ).slice( 1 )
+      `#${( ( 1 << 24 ) + ( this.r << 16 ) + ( this.g << 8 ) + this.b ).toString( 16 ).slice( 1 )}`
     );
   }
 
@@ -128,14 +128,14 @@ export class Color extends Observable {
    * @param b Blue value
    * @param a Opacity value
    */
-  constructor( r?: number, g?: number, b?: number, a?: number ) {
+  public constructor( r?: number, g?: number, b?: number, a?: number ) {
     super();
     this._r = 0;
     this._g = 0;
     this._b = 0;
     this._a = 0;
 
-    // set to black, fully opaque if no parameters passed
+    // Set to black, fully opaque if no parameters passed.
     this.set(
       r || 0,
       g || 0,
@@ -146,26 +146,26 @@ export class Color extends Observable {
 
   /**
    * Set the values
-   * @param r Red value
-   * @param g Green value
-   * @param b Blue value
-   * @param a Opacity value
+   * @param rIn Red value
+   * @param gIn Green value
+   * @param bIn Blue value
+   * @param aIn Opacity value
    * @returns A reference to itself
    */
-  public set( r: number, g: number, b: number, a?: number ): Color {
-    r = Math.round( r );
+  public set( rIn: number, gIn: number, bIn: number, aIn?: number ): Color {
+    let r = Math.round( rIn );
     r = MathHelper.clamp( r, 0, 255 );
 
-    g = Math.round( g );
+    let g = Math.round( gIn );
     g = MathHelper.clamp( g, 0, 255 );
 
-    b = Math.round( b );
+    let b = Math.round( bIn );
     b = MathHelper.clamp( b, 0, 255 );
 
-    a = ( a !== undefined ) ? a : this._a;
+    let a = ( aIn !== undefined ) ? aIn : this._a;
     a = MathHelper.clamp( a, 0, 1 );
 
-    // only call observers if something changed
+    // Only call observers if something changed.
     if ( this._r !== r || this._g !== g || this._b !== b || this._a !== a ) {
       this._r = r;
       this._g = g;
@@ -179,14 +179,14 @@ export class Color extends Observable {
   /**
    * Set color from hexadecimal string and opacity value
    * @param hex The hexadecimal string
-   * @param a Opacity value
+   * @param aIn Opacity value
    * @returns A reference to itself
    */
-  public setFromHex( hex: string, a?: number ): Color {
+  public setFromHex( hex: string, aIn?: number ): Color {
     const r = parseInt( hex.substring( 1, 3 ), 16 );
     const g = parseInt( hex.substring( 3, 5 ), 16 );
     const b = parseInt( hex.substring( 5, 7 ), 16 );
-    a = ( a !== undefined ) ? a : this._a;
+    const a = ( aIn !== undefined ) ? aIn : this._a;
 
     this.set( r, g, b, a );
     return this;
@@ -212,7 +212,7 @@ export class Color extends Observable {
 
   /**
    * Test equality of values for two colors
-   * @param v Another color
+   * @param c Another color
    * @returns Whether colors are equal
    */
   public equals( c: Color ): boolean {
