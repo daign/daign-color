@@ -1,6 +1,8 @@
 # daign-color
 
-[![NPM package][npm]][npm-url]
+[![CI][ci-icon]][ci-url]
+[![Coverage][coveralls-icon]][coveralls-url]
+[![NPM package][npm-icon]][npm-url]
 
 #### Simple color utils library in Typescript
 
@@ -33,17 +35,23 @@ console.log( gradient.colorAt( 0.5 ).hex );
 
 ## Scripts
 
-#### Build
+```bash
+# Build
+npm run build
 
-    npm run build
+# Run lint analysis
+npm run lint
 
-#### Run lint analysis
+# Run unit tests with code coverage
+npm run test
 
-    npm run lint
+# Get a full lcov report
+npm run coverage
+```
 
-#### Run unit tests with code coverage
-
-    npm run test
-
-[npm]: https://img.shields.io/npm/v/@daign/color.svg
+[ci-icon]: https://github.com/daign/daign-color/workflows/CI/badge.svg
+[ci-url]: https://github.com/daign/daign-color/actions
+[coveralls-icon]: https://coveralls.io/repos/github/daign/daign-color/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/daign/daign-color?branch=master
+[npm-icon]: https://img.shields.io/npm/v/@daign/color.svg
 [npm-url]: https://www.npmjs.com/package/@daign/color
